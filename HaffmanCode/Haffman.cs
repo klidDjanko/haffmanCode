@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Collections;
 
 namespace HaffmanCode
 {
@@ -15,6 +12,9 @@ namespace HaffmanCode
             List<Nodes> charsMap = new List<Nodes>();
             //Сохраняем список частот символов и их веса (01)
             List<Nodes> haffmanTree = new List<Nodes>();
+            //Сохраняем коды символов ()
+            List<LetterCode> haffmanCodes = new List<LetterCode>();
+
             //Считаем частоты в ведённом тексте, помещаем их в charMap, получаем алфавит в виде строки
             string alphabet = CountFrequency(input, charsMap);
 
@@ -53,16 +53,38 @@ namespace HaffmanCode
                 charsMap = charsMap.OrderByDescending(node => node.Frequency).ToList();
             }
 
-            //Формируем коды букв
+            //Формируем инвертированные коды букв (просмотр дерева весов идёт не от корня, а от потомков)
+            //Внешний цикл идёт по символам алфавита
             for(int l = 0; l < alphabet.Length; l++)
             {
+                //Получаем символ алфавита
                 string ch = alphabet[l].ToString();
                 string code = "";
+                //Внутренний цикл идёт по дереву с нулями и единицами, где у каждой ноды есть ещё и буквы (или их сочетания)
                 for (int t = 0; t < haffmanTree.Count; t++)
                 {
+                    //смотрим есть ли у ноды такая буква и если да, берём из неё вес (0 или 1)
                     if (haffmanTree[t].Chars.Contains(ch)) code += haffmanTree[t].Weight;  
                 }
+                //Инвертируем код
+                char[] temp = code.ToCharArray();
+                Array.Reverse(temp);
+                code = String.Concat<char>(temp);
+                //Запоминаем символ и соответсвующий ему код
+                haffmanCodes.Add(new LetterCode(ch, code));
             }
+
+            //Теперь переводим исходную строку в код хаффмана
+            string compress = "";
+            for (int l = 0; l < input.Length; l++)
+            {
+                for(int c = 0; c < haffmanCodes.Count; c++)
+                {
+                    if (haffmanCodes[c].Ch == input[l].ToString()) compress += haffmanCodes[c].Code;
+                }
+            }
+            //Выводим код хаффмана
+            Console.WriteLine("Код Хаффмана: " + compress);
         }
 
         private static string CountFrequency(string input, List<Nodes> charsMap)

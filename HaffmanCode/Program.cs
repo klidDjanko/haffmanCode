@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 
 namespace HaffmanCode
 {
@@ -15,6 +13,8 @@ namespace HaffmanCode
             string input = Console.ReadLine();
             Haffman haffman = new Haffman();
             haffman.Compress(input);
+
+            Console.ReadKey();
         }
 
 

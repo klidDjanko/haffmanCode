@@ -1,5 +1,4 @@
-﻿
-namespace HaffmanCode
+﻿namespace HaffmanCode
 {
     class Nodes
     {
