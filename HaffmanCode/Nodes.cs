@@ -25,7 +25,7 @@ namespace HaffmanCode
             this.weight = weight;
         }
 
-        //Свойства для доступа к значению частоты, символам
+        //Свойства для доступа к значению частоты, символам, весам
         public int Frequency
         {
             get { return frequency; }
@@ -34,6 +34,10 @@ namespace HaffmanCode
         public string Chars
         {
             get { return chars; } 
+        }
+        public int Weight
+        {
+            get { return weight; }
         }
     }
 }

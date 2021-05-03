@@ -15,10 +15,8 @@ namespace HaffmanCode
             List<Nodes> charsMap = new List<Nodes>();
             //Сохраняем список частот символов и их веса (01)
             List<Nodes> haffmanTree = new List<Nodes>();
-            //Считаем частоты в ведённом тексте, помещаем их в charMap
-            CountFrequency(input, charsMap);
-
-            Console.WriteLine("Done!");
+            //Считаем частоты в ведённом тексте, помещаем их в charMap, получаем алфавит в виде строки
+            string alphabet = CountFrequency(input, charsMap);
 
             //выполняем сортировку charMap по убыванию частот linq
             charsMap = charsMap.OrderByDescending(node => node.Frequency).ToList();
@@ -55,13 +53,19 @@ namespace HaffmanCode
                 charsMap = charsMap.OrderByDescending(node => node.Frequency).ToList();
             }
 
-            for (int i = 1; i < charsMap.Count; i += 2)
+            //Формируем коды букв
+            for(int l = 0; l < alphabet.Length; l++)
             {
-                Nodes obj = (Nodes)charsMap[i];
+                string ch = alphabet[l].ToString();
+                string code = "";
+                for (int t = 0; t < haffmanTree.Count; t++)
+                {
+                    if (haffmanTree[t].Chars.Contains(ch)) code += haffmanTree[t].Weight;  
+                }
             }
         }
 
-        private static void CountFrequency(string input, List<Nodes> charsMap)
+        private static string CountFrequency(string input, List<Nodes> charsMap)
         {
             //Буфер для подсчёта частот
             string charsUsed = "";
@@ -83,6 +87,7 @@ namespace HaffmanCode
                     charsMap.Add(node);
                 }
             }
+            return charsUsed;
         }
     }
 }
