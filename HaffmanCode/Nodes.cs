@@ -29,7 +29,6 @@
         {
             get { return frequency; }
         }
-
         public string Chars
         {
             get { return chars; } 
